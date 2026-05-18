@@ -11,7 +11,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building...'
-                sh 'docker build -t mycoolchat .'
+                sh 'docker build -t simple-chat-app .'
             }
         }
         stage('Test') {

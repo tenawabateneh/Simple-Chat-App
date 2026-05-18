@@ -24,8 +24,8 @@ Tips for making dockerize and How it works/runs
 Basics for building and running docker image
 # after all go to cmd and run the following command
 # docker build -t tenaw .
-# docker run -d --name tenawcontainer -p 8090:80 tenaw
-# docker run -d -p 8080:80 tenaw
+# docker run -d --name tenawcontainer -p 8000:80 tenaw
+# docker run -d -p 8000:80 tenaw
 # docker run -p 8000:80 -d tenaw    8000-is for host and 80-is for docker container(port redirected)
 
 
