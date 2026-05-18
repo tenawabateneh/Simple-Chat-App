@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css"
+      integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk="
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+    <title>Chatting App</title>
+    <style>
+      /* Additional styles for private messaging */
+      .private-message {
+        background-color: #e8f4f8;
+        border-left: 4px solid #007bff;
+        margin: 10px 0;
+        padding: 10px;
+        border-radius: 5px;
+      }
+
+      .private-message .meta {
+        color: #007bff;
+      }
+
+      .user-item {
+        cursor: pointer;
+        padding: 5px;
+        margin: 2px 0;
+        border-radius: 3px;
+        list-style: none;
+        transition: background-color 0.3s;
+      }
+
+      .user-item:hover {
+        background-color: #e0e0e0;
+      }
+
+      .private-chat-container {
+        padding: 10px;
+        background-color: #f8f9fa;
+        border-bottom: 2px solid #dee2e6;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      #private-recipient-display {
+        font-size: 14px;
+        color: #28a745;
+      }
+
+      #available-rooms {
+        margin-top: 20px;
+        border-top: 1px solid #ccc;
+        padding-top: 10px;
+      }
+
+      #available-rooms li {
+        font-size: 14px;
+        color: #666;
+        padding: 5px;
+        margin: 2px 0;
+        list-style: none;
+      }
+
+      .room-info {
+        font-size: 12px;
+        color: #999;
+        margin-left: 5px;
+      }
+
+      .chat-sidebar ul li i {
+        margin-right: 8px;
+      }
+
+      .checkbox-label {
+        margin-left: 10px;
+        font-size: 14px;
+      }
+
+      #private-mode-checkbox {
+        margin-right: 5px;
+        cursor: pointer;
+      }
+
+      .private-badge {
+        background-color: #007bff;
+        color: white;
+        padding: 2px 6px;
+        border-radius: 3px;
+        font-size: 11px;
+        margin-left: 10px;
+      }
+
+      /* Previous styles remain... */
+
+      /* Additional styles for all users section */
+      #all-users-section {
+        margin-top: 20px;
+        border-top: 2px solid #ffd700;
+        padding-top: 10px;
+      }
+
+      #all-users-section h4 {
+        color: #fff;
+        font-size: 14px;
+        margin-bottom: 10px;
+      }
+
+      .all-user-item {
+        transition: background-color 0.3s;
+        padding: 5px;
+        margin: 2px 0;
+        border-radius: 3px;
+        cursor: pointer;
+      }
+
+      .all-user-item:hover {
+        background-color: #3a3a3a;
+      }
+
+      .room-info {
+        font-size: 11px;
+        color: #ffd700;
+        margin-left: 8px;
+      }
+
+      .private-badge {
+        background-color: #007bff;
+        color: white;
+        padding: 2px 6px;
+        border-radius: 3px;
+        font-size: 10px;
+        margin-left: 8px;
+      }
+
+      .private-message {
+        background-color: #e8f4f8;
+        border-left: 4px solid #007bff;
+        margin: 10px 0;
+        padding: 10px;
+        border-radius: 5px;
+      }
+
+      .private-message .meta {
+        color: #007bff;
+      }
+
+      .user-item {
+        cursor: pointer;
+        padding: 5px;
+        margin: 2px 0;
+        border-radius: 3px;
+        transition: background-color 0.3s;
+      }
+
+      .user-item:hover {
+        background-color: #e0e0e0;
+      }
+
+      .private-chat-container {
+        padding: 10px;
+        background-color: #f8f9fa;
+        border-bottom: 2px solid #dee2e6;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      #private-recipient-display {
+        font-size: 14px;
+        color: #28a745;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="chat-container">
+      <header class="chat-header">
+        <h1><i class="fas fa-smile"></i> ChatApp</h1>
+        <a id="leave-btn" class="btn">Leave Room</a>
+      </header>
+
+      <div class="private-chat-container">
+        <label>
+          <input type="checkbox" id="private-mode-checkbox" />
+          <i class="fas fa-lock"></i> Private Message Mode
+        </label>
+        <span id="private-recipient-display"></span>
+      </div>
+
+      <main class="chat-main">
+        <div class="chat-sidebar">
+          <h3><i class="fas fa-comments"></i> Room Name:</h3>
+          <h2 id="room-name"></h2>
+
+          <h3><i class="fas fa-users"></i> Users in this room</h3>
+          <ul id="users"></ul>
+
+          <h3><i class="fas fa-globe"></i> Available Rooms</h3>
+          <ul id="available-rooms"></ul>
+        </div>
+
+        <div class="chat-messages"></div>
+      </main>
+
+      <div class="chat-form-container">
+        <form id="chat-form">
+          <input
+            id="message_bord"
+            type="text"
+            placeholder="Enter Message"
+            required
+            autocomplete="off"
+          />
+          <button class="btn"><i class="fas fa-paper-plane"></i> Send</button>
+        </form>
+      </div>
+    </div>
+
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.11.0/qs.min.js"
+      integrity="sha512-/l6vieC+YxaZywUhmqs++8uF9DeMvJE61ua5g+UK0TuHZ4TkTgB1Gm1n0NiA86uEOM9JJ6JUwyR0hboKO0fCng=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>
