@@ -16,7 +16,7 @@ pipeline {
         stage('Docker Build') {
             steps {
                 echo 'Building...'
-                sh 'docker build -t simple-chat-app .'
+                sh 'docker build -t $ImageName .'
             }
         }
         stage('Docker Push') {
@@ -26,7 +26,7 @@ pipeline {
                 usernameVariable: 'USER', 
                 passwordVariable: 'PASS'
                 )]) {
-                    sh "echo $PASS | docker login -u $USER --password-stdin"  
+                    sh 'echo $PASS | docker login -u $USER --password-stdin'
                     echo 'Pushing Docker image...'
                     sh "docker push $ImageName"
                 }
