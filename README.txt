@@ -30,3 +30,28 @@ Basics for building and running docker image
 
 
 #Then you can get your app by typing localhost:5000 on URL
+
+
+============================================================================================================================================
+============================================================================================================================================
+################                 Steps to add/Integrate with Jenkins                                            ############################
+============================================================================================================================================
+============================================================================================================================================
+
+NB: permission denied while trying to connect to the Docker daemon socket
+Fix:
+  Stop and remove current Jenkins container:
+    docker stop jenkins
+    docker rm jenkins
+  Run Jenkins again with Docker socket mounted:
+    docker run -d --name jenkins -p 8080:8080 -p 50000:50000 -v jenkins_home:/var/jenkins_home -v /var/run/docker.sock:/var/run/docker.sock jenkins/jenkins:lts
+  
+  Then enter container:
+    docker exec -u 0 -it jenkins bash
+  Install docker client again:
+    apt update
+    apt install docker.io -y
+  Then give Jenkins permission:
+    chmod 666 /var/run/docker.sock
+  Exit:exit
+  Now rerun pipeline using: ----   Build Now   ---- Docker build stage should work successfully.

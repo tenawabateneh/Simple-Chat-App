@@ -1,6 +1,11 @@
 pipeline {
     agent any
 
+    environment {
+        // Define any environment variables here
+        ImageName = 'tenaw/simple-chat-app'
+    }   
+
     stages {
         stage('Clone Repository') {
             steps {
@@ -8,10 +13,18 @@ pipeline {
                 git 'https://github.com/tenawabateneh/Simple-Chat-App.git'
             }
         }
-        stage('Build') {
+        stage('Docker Build') {
             steps {
                 echo 'Building...'
                 sh 'docker build -t simple-chat-app .'
+            }
+        }
+        stage('Docker Push') {
+            steps {
+              withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                sh "echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin"  
+                echo 'Pushing Docker image...'
+                sh "docker push $ImageName"
             }
         }
         stage('Test') {
