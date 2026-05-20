@@ -13,6 +13,12 @@ pipeline {
                 git 'https://github.com/tenawabateneh/Simple-Chat-App.git'
             }
         }
+        stage('Install Dependencies') {
+            steps {
+                echo 'Installing dependencies...'
+                sh 'npm install'
+            }
+        }
         stage('Docker Build') {
             steps {
                 echo 'Building...'
@@ -36,6 +42,12 @@ pipeline {
             steps {
                 echo 'Testing...'
                 // Add test commands here
+            }
+        }
+        stage('Kubernetes Deployment') {
+            steps {
+                echo 'Deploying to Kubernetes...'
+                sh 'kubectl apply -f deployment.yaml'
             }
         }
         stage('Deploy') {
