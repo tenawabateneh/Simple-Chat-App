@@ -55,3 +55,41 @@ Fix:
     chmod 666 /var/run/docker.sock
   Exit:exit
   Now rerun pipeline using: ----   Build Now   ---- Docker build stage should work successfully.
+
+
+  
+============================================================================================================================================
+============================================================================================================================================
+################                 Steps Kubernetes Deployment with Jenkins                                            ############################
+============================================================================================================================================
+============================================================================================================================================
+Create:
+  deployment.yaml         ....Apply manually first:   kubectl apply -f deployment.yaml
+✅ STEP 1 — Install kubectl inside Jenkins container 
+  docker exec -it -u root jenkins bash
+  apt update
+  apt install kubectl -y
+
+Install Node.js + npm inside Jenkins container.
+✅ STEP 1 — Enter Jenkins container as root
+  docker exec -it -u root jenkins bash
+
+✅ STEP 2 — Install Node.js + npm
+
+Inside container run:
+  apt update
+  apt install -y nodejs npm
+
+✅ STEP 3 — Verify installation
+  node -v
+  npm -v
+
+✅ STEP 4 — Exit container
+  exit
+
+✅ STEP 5 — Restart Jenkins
+  docker restart jenkins
+
+✅ STEP 6 — Run pipeline again
+Now this stage should work:
+  Install Dependencies
