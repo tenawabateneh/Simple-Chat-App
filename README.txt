@@ -69,6 +69,7 @@ Create:
   docker exec -it -u root jenkins bash
   apt update
   apt install kubectl -y
+  kubectl version --client
 
 Install Node.js + npm inside Jenkins container.
 ✅ STEP 1 — Enter Jenkins container as root
