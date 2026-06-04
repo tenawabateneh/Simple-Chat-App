@@ -94,3 +94,53 @@ Inside container run:
 ✅ STEP 6 — Run pipeline again
 Now this stage should work:
   Install Dependencies
+
+
+============================================================================================================================================
+============================================================================================================================================
+###############                 Steps to configure, test, and access the Application                         ############################
+============================================================================================================================================
+============================================================================================================================================
+
+✅ STEP 1 — Fix Port Mismatches (deployment.yaml vs server.js)
+  In server.js, the application runs on port 8000.
+  So, deployment.yaml must expose and target port 8000:
+    ports:
+      - containerPort: 8000
+    ...
+    ports:
+      - port: 8000
+        targetPort: 8000
+        nodePort: 30080
+
+✅ STEP 2 — Configure automated testing
+  Create local unit tests in `test/test.js`.
+  Update package.json:
+    "test": "node test/test.js"
+  This allows running:
+    npm test
+
+✅ STEP 3 — Setup the Jenkinsfile Pipeline
+  Ensure "Install Dependencies" and "Test" stages are enabled in Jenkinsfile.
+  Reorder stages so that "Test" runs BEFORE "Docker Build" to ensure no broken code gets pushed.
+  Add rollout verification:
+    kubectl rollout restart deployment/simple-chat-app
+    kubectl rollout status deployment/simple-chat-app
+
+✅ STEP 4 — Fix Kubernetes access on KinD (Kubernetes in Docker) Cluster (Port-Forwarding)
+  Since KinD runs inside a Docker container, NodePort 30080 is not exposed to the host's localhost by default.
+  To access the application from my browser, I must run port-forwarding on my host:
+    kubectl --context=docker-desktop port-forward service/simple-chat-service 30080:8000
+  
+  Then, open the browser and go to:
+    http://localhost:30080
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+🇪🇹 በአማርኛ (Amharic explanation for accessing the application):
+--------------------------------------------------------------------------------------------------------------------------------------------
+የ KinD (Kubernetes) ሰርቪስ በኮምፒውተር ላይ በቀጥታ በ localhost:30080 ለማግኘት ፖርት ፎርዋርድ (port-forward) ማድረግ ያስፈልጋል።
+በትርሚናል (Command Prompt ወይም PowerShell) ላይ ይህንን ትዕዛዝ አሂድ፦
+  kubectl --context=docker-desktop port-forward service/simple-chat-service 30080:8000
+
+ከዚያ በብሮውዘር http://localhost:30080 ብሎ መግባት ይችላለህ።
+--------------------------------------------------------------------------------------------------------------------------------------------
