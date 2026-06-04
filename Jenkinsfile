@@ -16,7 +16,13 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 echo 'Installing dependencies...'
-                // sh 'npm install'
+                sh 'npm install'
+            }
+        }
+        stage('Test') {
+            steps {
+                echo 'Testing...'
+                sh 'npm test'
             }
         }
         stage('Docker Build') {
@@ -36,12 +42,6 @@ pipeline {
                     echo 'Pushing Docker image...'
                     sh "docker push $ImageName"
                 }
-            }
-        }
-        stage('Test') {
-            steps {
-                echo 'Testing...'
-                // Add test commands here
             }
         }
         stage('Kubernetes Deployment') {
