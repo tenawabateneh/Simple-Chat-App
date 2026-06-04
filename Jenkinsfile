@@ -52,8 +52,10 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                echo 'Deploying...'
-                // Add deployment commands here
+                echo 'Restarting Kubernetes deployment to pull the latest image...'
+                sh 'kubectl rollout restart deployment/simple-chat-app --insecure-skip-tls-verify=true'
+                sh 'kubectl rollout status deployment/simple-chat-app --timeout=90s --insecure-skip-tls-verify=true'
+                sh 'kubectl get svc simple-chat-service --insecure-skip-tls-verify=true'
             }
         }
     }
