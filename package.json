@@ -6,7 +6,8 @@
   "scripts": {
     "test": "node test/test.js",
     "start": "node server",
-    "dev": "nodemon server"
+    "dev": "nodemon server",
+    "docker-restart": "node jenkins-fix.js"
   },
   "author": "Tenaw (NCW)",
   "license": "ISC",
