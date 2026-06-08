@@ -1,4 +1,4 @@
-# used the newest node version 
+# used the latest image version of node to build the image
 FROM node:20
 
 # Create app directory

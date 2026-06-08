@@ -1,4 +1,4 @@
-// Jenkinsfile for CI/CD pipeline of Simple Chat App using Webhook trigger
+// Jenkinsfile for CI/CD pipeline of Simple Chat App using GitHub Webhook trigger
 
 pipeline {
     agent any
